@@ -4,8 +4,10 @@ import Header from '../components/Header'
 import { FaBandAid, FaBell, FaClock, FaFacebook, FaFire, FaHandshake, FaHandsHelping, FaHireAHelper, FaHome, FaPooStorm, FaTimes, FaTimesCircle, FaTruck, FaUsers } from 'react-icons/fa'
 import { FaBoxArchive, FaHeartPulse, FaHouseFloodWater, FaKitMedical, FaLocationDot, FaTimeline } from 'react-icons/fa6'
 import Footer from '../../assets/components/Footer'
+import { useNavigate } from 'react-router-dom'
 
 function Home() {
+    const navigate = useNavigate()
   return (
     <div>
         <Header/>
@@ -14,8 +16,8 @@ function Home() {
             <p className='text-gray-400 text-3xl text-center mt-9'>Connecting communities in crisis with the resources they need. Join the <br /> network of surviors and aid providers action in real-time</p>
 
             <div className='flex justify-center items-center gap-3 mt-9'>
-                <button className='bg-gray-500 hover:bg-gray-600 text-xl text-white px-4 p-4 rounded-xl flex items-center gap-2 cursor-pointer'><FaHeartPulse/> I Need Help</button>
-                <button className='bg-blue-500 hover:bg-blue-600 text-xl text-white px-4 p-4 rounded-xl flex items-center gap-2 cursor-pointer'><FaHandsHelping/>I Can Help</button>
+                <button onClick={()=>navigate('/register')} className='bg-gray-500 hover:bg-gray-600 text-xl text-white px-4 p-4 rounded-xl flex items-center gap-2 cursor-pointer'><FaHeartPulse/> I Need Help</button>
+                <button onClick={()=>navigate('/register')} className='bg-blue-500 hover:bg-blue-600 text-xl text-white px-4 p-4 rounded-xl flex items-center gap-2 cursor-pointer'><FaHandsHelping/>I Can Help</button>
                 
             </div>
         </section>
@@ -44,11 +46,11 @@ function Home() {
         </section>
         {/* active Zones */}
         <section className='bg-primary-blue '>
-            <p className='text-3xl text-white p-10 ml-10 pt-15'>Current Active Zones</p>
+            <p className='text-3xl text-white p-10 ml-10 pt-15'>Current Active Requests</p>
             <div className='md:grid grid-cols-2 p-8'>
                 <div className='flex justify-between items-center text-white border-1 border-gray-600 rounded-2xl bg-primary-navbg p-4 mr-10 ml-10 px-6 mb-5'>
                     <div>   
-                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaHouseFloodWater className='text-orange-600 text-2xl'/> Flood Warning-Zone A</p>
+                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaHouseFloodWater className='text-orange-600 text-2xl'/> Shelter</p>
                         <p className='text-gray-400 mb-2'>Severity:<span className='text-orange-500 font-bold'>High</span></p>
                         <p className='text-gray-400 mb-2'>Updated:10 min ago</p>
                         <p className='text-gray-400 mb-3'>Needs: Water,Shelter,Boats</p>
@@ -60,10 +62,10 @@ function Home() {
                 </div>
                 <div className='flex justify-between items-center text-white border-1 border-gray-600 rounded-2xl bg-primary-navbg p-4 mr-10 ml-10 px-6 mb-5'>
                     <div>   
-                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaFire className='text-red-600 text-2xl'/> Wildfire Alert-County North</p>
+                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaFire className='text-red-600 text-2xl'/> Food</p>
                         <p className='text-gray-400 mb-2'>Severity:<span className='text-red-500 font-bold'>Critical</span></p>
                         <p className='text-gray-400 mb-2'>Updated:25 min ago</p>
-                        <p className='text-gray-400 mb-3'>Needs: Evacuation,Masks</p>
+                        <p className='text-gray-400 mb-3'>Needs: Rice</p>
                         <button className='bg-gray-600 hover:bg-gray-500 text-white font-medium p-2 rounded cursor-pointer'>View Details</button>
                     </div>
                     <div>
@@ -72,10 +74,10 @@ function Home() {
                 </div>
                 <div className='flex justify-between items-center text-white border-1 border-gray-600 rounded-2xl bg-primary-navbg p-4 mr-10 ml-10 px-6 mb-5'>
                     <div>   
-                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaPooStorm className='text-yellow-400 text-2xl'/>Severe ThunderStorm-Costline </p>
+                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaPooStorm className='text-yellow-400 text-2xl'/>Medicine </p>
                         <p className='text-gray-400 mb-2'>Severity:<span className='text-yellow-500 font-bold'>Moderate</span></p>
                         <p className='text-gray-400 mb-2'>Updated:1 hour ago</p>
-                        <p className='text-gray-400 mb-3'>Needs: Power Generators</p>
+                        <p className='text-gray-400 mb-3'>Needs: paracetamol</p>
                         <button className='bg-gray-600 hover:bg-gray-500 text-white font-medium p-2 rounded cursor-pointer'>View Details</button>
                     </div>
                     <div>
@@ -84,7 +86,7 @@ function Home() {
                 </div>
                 <div className='flex justify-between items-center text-white border-1 border-gray-600 rounded-2xl bg-primary-navbg p-4 mr-10 ml-10 px-6 mb-5'>
                     <div>   
-                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaKitMedical className='text-blue-400 text-2xl'/> Medical Shortage - Sector 4</p>
+                        <p className='text-white text-xl font-bold flex items-center gap-5 mb-3'><FaKitMedical className='text-blue-400 text-2xl'/> Medicine</p>
                         <p className='text-gray-400 mb-2'>Severity:<span className='text-blue-400 font-bold'>Medium</span></p>
                         <p className='text-gray-400 mb-2'>Updated:2 hours ago</p>
                         <p className='text-gray-400 mb-3'>Needs: Insulin,Antibiotics</p>

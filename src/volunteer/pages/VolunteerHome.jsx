@@ -5,9 +5,27 @@ import SideBarItems from '../components/SidebarItem'
 import { FaLocationDot, FaTableCellsRowUnlock } from 'react-icons/fa6'
 import WeeklyActivity from '../components/WeeklyActivity'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 function VictimHome() {
     const navigate = useNavigate()
+    const[dp,setDp] = useState("")
+    const [token,setToken] = useState("")
+    const [name,setName] = useState("")
+    console.log(dp)
+    console.log(name)
+    useEffect(()=>{
+        if(sessionStorage.getItem("token")){
+            const userToken = sessionStorage.getItem("token")
+            setToken(userToken)
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            const user = JSON.parse(sessionStorage.getItem("user"))
+            setDp(user.picture)
+            const user2 = JSON.parse(sessionStorage.getItem("user"))
+            setName(user2.username)
+        }
+    },[token])
   return (
     <div className='grid grid-cols-5'>
         <section className='col-span-1 bg-secondary-blue h-full border-r-1 border-gray-700'>
@@ -26,11 +44,11 @@ function VictimHome() {
                     <FaBell className='text-amber-50 mr-5'/>
 
                     <div className='flex flex-col '>
-                        <p className='text-white font-bold'>Sarah Jekins</p>
+                        <p className='text-white font-bold'>{name}</p>
                         <p className='text-gray-400'>Volunteer Account</p>
                     </div>
                     <div>
-                        <img className='rounded-full w-10 h-10' src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" />
+                        <img className='rounded-full w-10 h-10' src="https://static.vecteezy.com/system/resources/previews/068/208/439/non_2x/user-profile-flat-icon-with-round-white-shape-avatar-sign-gender-neutral-silhouette-default-user-icon-social-media-profile-picture-user-profile-account-dp-sign-illustration-vector.jpg" alt="" />
                     </div>
                 </div>
 

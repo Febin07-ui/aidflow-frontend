@@ -3,8 +3,10 @@ import AdminSideBar from '../components/AdminSideBar'
 import { FaCheckDouble, FaSearch } from 'react-icons/fa'
 import RequestTable from '../components/RequestTable'
 import { getAllRequestAPI } from '../../services/allAPI'
+import { useNavigate } from 'react-router-dom'
 
 function ManageRequests() {
+  
 
   const [requests,setRequests] = useState([])
 
@@ -23,7 +25,7 @@ function ManageRequests() {
 
 
   return (
-    <div className=' bg-secondary-blue p-6 h-screen'>
+    <div className=' bg-secondary-blue p-6 h-full'>
       
         {/* header */}
         <div className='flex justify-between border-1 pb-3 border-b-gray-700'>

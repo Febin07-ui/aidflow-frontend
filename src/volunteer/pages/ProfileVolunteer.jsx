@@ -1,11 +1,11 @@
 import React from 'react'
-import VictimSideBar from '../components/VictimSideBar'
 import { FaBell, FaEdit, FaRegQuestionCircle, FaSearch } from 'react-icons/fa'
 import { FaMessage, FaRightFromBracket, FaUpDownLeftRight } from 'react-icons/fa6'
+import SideBarItems from '../components/SidebarItem'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-function ProflileVictim() {
+function ProfileVolunteer() {
     const [dp,setDp] = useState("")
     const [username,setUsername] = useState("")
     useEffect(()=>{
@@ -21,7 +21,7 @@ function ProflileVictim() {
     <div>
         <div className='grid grid-cols-5'>
             <section className='col-span-1 bg-secondary-blue h-full border-r-1 border-gray-700'>
-                <VictimSideBar/>
+                <SideBarItems/>
             </section>
             <section className='col-span-4'>
                 {/* top */}
@@ -44,7 +44,7 @@ function ProflileVictim() {
                             </div>
                             <p className='text-white font-bold text-center mb-4'>{username}</p>
                             <div>
-                                <p className='text-blue-400 bg-blue-400/15 text-center text-sm mx-29 rounded-3xl p-1'>• Victim Account</p>
+                                <p className='text-blue-400 bg-blue-400/15 text-center text-sm mx-29 rounded-3xl p-1'>• Volunteer </p>
                             </div>
                         </div>
                         <div className='p-7'>   
@@ -70,4 +70,4 @@ function ProflileVictim() {
   )
 }
 
-export default ProflileVictim
+export default ProfileVolunteer

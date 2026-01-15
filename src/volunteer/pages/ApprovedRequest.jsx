@@ -3,12 +3,13 @@ import ApprovedReqHeader from '../components/ApprovedReqHeader'
 import { FaLocationDot } from 'react-icons/fa6'
 import { FaCheck } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { getApprovedRequestsAPI } from '../../services/allAPI'
+import { acceptTaskAPI, getApprovedRequestsAPI } from '../../services/allAPI'
 
 function ApprovedRequest() {
     const navigate = useNavigate()
 
     const [approvedReq,setApprovedReq] = useState([])
+    const [mapLocation, setMapLocation] = useState("India")
 
     const timeAgo = (date) => {
     const now = new Date()
@@ -45,6 +46,20 @@ function ApprovedRequest() {
         fetchApprovedRequests()
     },[])
 
+    const handleAcceptTask = async (requestId) =>{
+        const volunteer = JSON.parse(sessionStorage.getItem("user"))
+
+        const result = await acceptTaskAPI({
+            requestId,
+            volunteerId:volunteer._id
+        })
+        if(result.status === 200){
+                alert("Task accepted successfully")
+                navigate('/volunteer/mytask')
+            
+        }
+    }
+
   return (
     <div className='flex flex-col h-screen overflow-hidden bg-secondary-blue'>
         <div className='z-10 shadow-md'>
@@ -55,7 +70,7 @@ function ApprovedRequest() {
                 <div className='flex flex-col p-4'>
                     <p className='text-white font-bold text-3xl'>Approved Request</p>
                     <p className='text-gray-400 mb-4'>Connect with help-seekers and coordinate resources.</p>
-                    <div className='flex justify-evenly'>
+                    {/* <div className='flex justify-evenly'>
                         <select className='bg-[#36393f] rounded text-white p-2' name="" id="">
                             <option value="">Urgency</option>
                             <option value="">High</option>
@@ -69,12 +84,12 @@ function ApprovedRequest() {
                             <option value="">Shelter</option>
                         </select>
                         <button className='text-blue-400'>Reset</button>
-                    </div>
+                    </div> */}
                     {/* Request boxes */}
                     {
                         approvedReq.length>0 ? (
                             approvedReq.map((req)=>(
-                                <div key={req.id} className='flex justify-between p-4 bg-[#2a2c30] m-3 rounded-2xl border-1 border-gray-700 hover:border-blue-500 hover:border-l-4 gap-3'>
+                                <div key={req.id} onClick={() => setMapLocation(req.location)} className='flex justify-between p-4 bg-[#2a2c30] m-3 rounded-2xl border-1 border-gray-700 hover:border-blue-500 hover:border-l-4 gap-3'>
                                     <div className='flex flex-col '>
                                         <div className='flex gap-5 mb-1'>
                                             <p className={`p-1 rounded text-sm ${req.urgency == "High" ? "bg-red-500/20 text-red-500" : req.urgency == "Medium" ?"bg-orange-500/20 text-orange-500" : "bg-green-500/20 text-green-500"}  `}>{req.urgency.toUpperCase()}</p>
@@ -85,7 +100,7 @@ function ApprovedRequest() {
 
                                         <p className='text-gray-400 flex items-center mb-2'><FaLocationDot className='mr-2'/> {req.location} </p>
 
-                                        <button onClick={()=>navigate('/volunteer/mytask')} className='bg-blue-500 text-white w-full rounded p-2 flex justify-center gap-3 items-center hover:bg-blue-600 cursor-pointer'>Accept Task <FaCheck className='bg-blue'/></button>
+                                        <button onClick={()=>handleAcceptTask(req._id)} className='bg-blue-500 text-white w-full rounded p-2 flex justify-center gap-3 items-center hover:bg-blue-600 cursor-pointer'>Accept Task <FaCheck className='bg-blue'/></button>
                                         
                                     </div>
                                 </div>
@@ -104,9 +119,9 @@ function ApprovedRequest() {
             </div>
             <div className='col-span-3'>
                 <iframe
-                    className="w-full h-full rounded-2xl border "
-                    src="https://maps.google.com/maps?q=9.9932,76.3585&z=15&output=embed">
-                </iframe>
+                className="w-full h-full rounded-2xl border"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(mapLocation)}&z=15&output=embed`}
+                />
             </div>
 
         </div>

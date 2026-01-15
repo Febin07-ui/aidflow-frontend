@@ -1,36 +1,55 @@
-import { useNavigate } from "react-router-dom";
 
-export function ReqestRowVictim() {
-    const navigate = useNavigate()
+
+export function ReqestRowVictim({myRequests}) {
   return (
-    <tr className="border-t text-sm text-white">
+    <tbody>
+    {
+      myRequests.length > 0 ?(
+      myRequests.map(req=>(
+        <tr key={req._id} className="border-t text-sm text-white">
 
-      
-
-      <td className="p-3">REQ-1024</td>
-      <td className="p-3">Oct 24, 14:30</td>
-      <td className="p-3">Medical Supplies</td>
-
-      <td className="p-3">
-        <span className="px-2 py-1 text-xs rounded bg-red-500/20 text-red-500">
-          Critical
-        </span>
-      </td>
-
-      <td className="p-3">
-        <span className="px-2 py-1 text-xs rounded bg-yellow-500/20 text-yellow-500">
-          Pending
-        </span>
-      </td>
-
-      <td className="p-3 w-28">
-        <div className="flex gap-2">
-          <button onClick={()=>navigate('/victim/request-details')} className="bg-blue-500/15 text-blue-500 hover:bg-blue-500/25 cursor-pointer text-sm rounded p-1 px-1">View Details</button>
           
-        </div>
-      </td>
 
-    </tr>
+          <td className="p-3">{req._id.slice(-5)}</td>
+          <td className="p-3">{new Date(req.createdAt).toLocaleDateString()}</td>
+          <td className="p-3">{req.resourceType}</td>
+
+          <td className="p-3">
+            <span className={`px-2 py-1 text-xs rounded ${
+              req.urgency=== "High" 
+              ? "bg-red-500/20 text-red-500" 
+              : req.urgency === "Medium" 
+              ? "bg-yellow-500/20 text-yellow-500" 
+              : "bg-green-500/20 text-green-500"}`}>
+              {req.urgency}
+            </span>
+          </td>
+
+          <td className="p-3">
+            <span className={`px-2 py-1 text-xs rounded ${
+              req.status==="pending"
+              ? "bg-yellow-500/20 text-yellow-500"
+              : req.status==="rejected"
+              ? "bg-red-500/20 text-red-500"
+              : req.status==="completed"
+              ? "bg-gray-500/20 text-gray-500"
+              :
+              "bg-green-500/20 text-green-500"
+              }`}>
+                {req.status}
+            </span>
+          </td>
+
+          
+
+        </tr>
+      ))
+      ):(
+        <p className="text-gray-500 text-center">not created any request</p>
+      )
+    }
+    </tbody>
+    
   );
 }
 

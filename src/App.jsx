@@ -11,6 +11,8 @@ import ManageRequests from "./admin/pages/ManageRequests"
 import ProflileVictim from "./victim/pages/ProflileVictim"
 import VictimRequests from "./victim/pages/VictimRequests"
 import RequestDetails from "./victim/pages/RequestDetails"
+import ProfileVolunteer from "./volunteer/pages/ProfileVolunteer"
+import ManageUser from "./admin/pages/ManageUser"
 
 
 function App() {
@@ -31,11 +33,14 @@ function App() {
         
         
         <Route path="/volunteer" element={<VolunteerHome/>}/>
+        <Route path="/volunteer/profile" element={<ProfileVolunteer/>}/>
         <Route path="/volunteer/approved-request" element={<ApprovedRequest/>}/>
         <Route path="/volunteer/mytask" element={<MyTasks />}/>
 
         <Route path="/admin" element={<AdminHome/>}/>
         <Route path="/admin/manage-requests" element={<ManageRequests/>}/>
+        <Route path="/admin/manage-users" element={<ManageUser/>}/>
+        
         
         
       </Routes>

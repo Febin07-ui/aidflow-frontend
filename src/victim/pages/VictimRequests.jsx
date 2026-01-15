@@ -3,14 +3,36 @@ import NavigationBar from '../components/NavigationBar'
 import { FaEnvelopeOpenText, FaPlus, FaSearch } from 'react-icons/fa'
 import RequestTable from '../../admin/components/RequestTable'
 import RequestTableVictim from '../components/RequestTableVictim'
+import { getVictimRequestAPI } from '../../services/allAPI'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 function VictimRequests() {
+    const [myRequests,setMyRequests] = useState([])
+
+    const getMyRequests = async () =>{
+        const token = sessionStorage.getItem("token")
+
+        const reqHeader = {
+            "Authorization":`Bearer ${token}`
+        }
+
+        const result = await getVictimRequestAPI(reqHeader)
+        if(result.status === 200){
+            setMyRequests(result.data)
+        }
+    }
+
+    useEffect(()=>{
+        getMyRequests()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
   return (
     <div className='flex flex-col'>
         
         <NavigationBar/>
         
-        <div className='flex flex-col p-5 bg-primary-blue h-screen px-25 py-10 '>
+        <div className='flex flex-col p-5 bg-primary-blue h-full px-25 py-10 '>
             <div className='flex justify-between '>
                 <div className='flex flex-col '>
                     <p className='text-white text-3xl font-bold mb-2'>My Requests</p>
@@ -32,7 +54,7 @@ function VictimRequests() {
                 </select>
             </div>
             
-            <RequestTableVictim/>
+            <RequestTableVictim myRequests={myRequests}/>
 
             
             

@@ -51,9 +51,12 @@ export function ReqRows({req}) {
         <span className={`px-2 py-1 text-xs rounded ${
         req.status==="pending"
         ? "bg-yellow-500/20 text-yellow-500"
-        : req.status==="approved"
-        ? "bg-green-500/20 text-green-500"
-        : "bg-red-500/20 text-red-500"
+        : req.status==="rejected"
+        ? "bg-red-500/20 text-red-500"
+        : req.status==="completed"
+        ? "bg-gray-500/20 text-gray-500"
+        :
+        "bg-green-500/20 text-green-500"
         }`}>
           {req.status}
         </span>
@@ -61,8 +64,22 @@ export function ReqRows({req}) {
 
       <td className="p-3 w-28">
         <div className="flex gap-2">
-          <button onClick={handleApprove} className="bg-blue-500 hover:bg-blue-600 cursor-pointer  rounded p-1">Approve</button>
-          <button onClick={handleRejected} className="bg-red-500 hover:bg-red-600 cursor-pointer rounded p-1">Decline</button>
+          {
+            req.status == "completed" ? 
+              <p className="text-gray-500 ">Completed</p>
+            : req.status == "assigned" ?
+
+              <p className="text-green-500 ">assigned</p>
+            :
+            <>
+              <button onClick={handleApprove} className="bg-blue-500 hover:bg-blue-600 cursor-pointer  rounded p-1">Approve</button>
+              <button onClick={handleRejected} className="bg-red-500 hover:bg-red-600 cursor-pointer rounded p-1">Decline</button>
+            </> 
+            
+              
+            
+          }
+          
         </div>
       </td>
       

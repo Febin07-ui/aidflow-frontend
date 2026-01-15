@@ -1,11 +1,30 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
 import { FaChartArea, FaDashcube, FaEnvelope, FaIcons, FaRegQuestionCircle, FaThLarge, FaUser } from 'react-icons/fa'
 import { FaCodePullRequest, FaEnvelopesBulk, FaGear, FaGears } from 'react-icons/fa6'
 import { MdRequestPage } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
 function VictimSideBar() {
+    const[dp,setDp] = useState("")
+    const [token,setToken] = useState("")
+    const [name,setName] = useState("")
     const navigate = useNavigate()
+    console.log(dp)
+    console.log(name)
+    useEffect(()=>{
+        if(sessionStorage.getItem("token")){
+            const userToken = sessionStorage.getItem("token")
+            setToken(userToken)
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            const user = JSON.parse(sessionStorage.getItem("user"))
+            setDp(user.picture)
+            const user2 = JSON.parse(sessionStorage.getItem("user"))
+            setName(user2.username)
+        }
+    },[token])
+
   return (
     <div className='flex justify-between flex-col pl-4 h-screen sticky top-0 z-1'>
         <div className='flex flex-col'>
@@ -35,10 +54,10 @@ function VictimSideBar() {
 
             <div className='flex items-center gap-3'>
                 <div>
-                    <img className='rounded-full w-10 h-10' src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" />
+                    <img className='rounded-full w-10 h-10' src={dp?dp:"https://static.vecteezy.com/system/resources/previews/068/208/439/non_2x/user-profile-flat-icon-with-round-white-shape-avatar-sign-gender-neutral-silhouette-default-user-icon-social-media-profile-picture-user-profile-account-dp-sign-illustration-vector.jpg"} alt="" />
                 </div>
                 <div className='flex flex-col '>
-                    <p className='text-gray-400 font-bold'>Sarah Jekins</p>
+                    <p className='text-gray-400 font-bold'>{name}</p>
                     <p className='text-gray-400'>Victim Account</p>
                 </div>
             </div>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, } from 'react-router-dom'
 import { Flip, ToastContainer, toast } from 'react-toastify';
-import { loginAPI, registerAPI } from '../../services/allAPI';
+import { googleLoginAPI, loginAPI, registerAPI } from '../../services/allAPI';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 function Auth({insideRegister}) {
     const navigate = useNavigate()
@@ -38,7 +40,7 @@ function Auth({insideRegister}) {
                 }
             }catch(err){
                 console.log(err);
-            }
+            } 
         }else{
             toast.info("plase fill form complely")
         }
@@ -52,9 +54,16 @@ function Auth({insideRegister}) {
             try{
                 const result = await loginAPI(userDetails)
                 console.log(result)
-                if(result.status==200){
+                if(result.status==403){
+                    toast.error("Your account is blocked By Admin")
+                    setTimeout(()=>{
+                        setUserDetails({"username":"","email":"","password":""})
+                        navigate('/login')
+                    },1500)
+                }
+                else if(result.status==200){
                     toast.success("Login Successfull!!!")
-                    sessionStorage.setItem("token",result.data.user)
+                    sessionStorage.setItem("token",result.data.token)
                     sessionStorage.setItem("user",JSON.stringify(result.data.user))
                     setTimeout(()=>{
                         if(result.data.user.role=="admin"){
@@ -65,7 +74,6 @@ function Auth({insideRegister}) {
                             navigate('/victim')
                         }
                     },2500)
-
                 }else if(result.status==401 || result.status==404){
                     toast.warning(result.response.data)
                     setUserDetails({"username":"","email":"","password":""})
@@ -79,6 +87,45 @@ function Auth({insideRegister}) {
             }
         }else{
             toast.info("plase fill form complely")
+        }
+    }
+
+    const handleGoogleLogin = async (credentialResponse) =>{
+        console.log("Inside handleGoogleLogin")
+        console.log(credentialResponse)
+        const decode = jwtDecode(credentialResponse.credential)
+        console.log(decode)
+        
+        try {
+            const result = await googleLoginAPI({
+                username: decode.name,
+                email: decode.email,
+                password: 'googlePassword',
+                picture: decode.picture
+            })
+    
+            if(result.status==200){
+                toast.success("Login Successfull!!!")
+                sessionStorage.setItem("token",result.data.token)
+                sessionStorage.setItem("user",JSON.stringify(result.data.user))
+                setTimeout(()=>{
+                    if(result.data.user.role=="admin"){
+                        navigate('/admin')
+                    }else if(result.data.user.role=="volunteer"){
+                        navigate('/volunteer')
+                    }else{
+                        navigate('/victim')
+                    }
+                },2500)
+    
+            } else {
+                // This else now correctly matches the if(result.status==200)
+                console.log(result)
+                toast.error("something went wrong")
+            }
+        } catch(err) {
+            console.log(err)
+            toast.error("Google Login Failed")
         }
     }
 
@@ -118,14 +165,14 @@ function Auth({insideRegister}) {
                 <div className='flex flex-col '>
                     <div>
                         <p className='text-white mb-1'>Password</p>
-                        <input value={userDetails.password} onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})} type="text" placeholder='Enter Password' className='bg-[#24272b] w-full text-white px-2 py-2 rounded mb-2 placeholder-slate-200 ' />
+                        <input value={userDetails.password} onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})} type="password" placeholder='Enter Password' className='bg-[#24272b] w-full text-white px-2 py-2 rounded mb-2 placeholder-slate-200 ' />
                     </div>
                     {/* forgot password */}
                     {
                         !insideRegister && 
                         <div className='flex justify-between mb-5 '>
                             <p className='text-xs text-gray-400'>Never Share your password with others</p>
-                            <button className='text-xs text-blue-50 underline cursor-pointer'>Forgot Password ?</button>
+                            {/* <button className='text-xs text-blue-50 underline cursor-pointer'>Forgot Password ?</button> */}
                         </div>
                     }
                     {/* {
@@ -149,8 +196,28 @@ function Auth({insideRegister}) {
 
                 }
 
-                <p className='text-gray-300 mb-2 text-center'>------------------ Or Continue with --------------------</p>
-                <button className='bg-[#24272b] w-full p-2 text-white rounded-md mb-4'>Google</button>
+                
+                {/* google Authentication */}
+                <div className='text-center my-5'>
+                    {
+                        !insideRegister &&
+                        <p className='text-gray-300 mb-2 text-center'>------------------ Or Continue with --------------------</p>
+                        
+                    }
+                    {
+                        !insideRegister &&
+                        <div className='my-5 flex justify-center items-center w-full '>
+                          <GoogleLogin
+                            onSuccess={credentialResponse => {
+                                handleGoogleLogin(credentialResponse)
+                            }}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                            />;  
+                        </div>
+                    }
+                </div>
                 {
                     insideRegister &&
                     <p className='text-gray-300 '>Alredy have an account ? <Link to={'/login'} className='text-blue-400 cursor-pointer hover:text-blue-500'>Log In</Link></p>

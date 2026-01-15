@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ReqestRowVictim } from './RequestRowVictim'
 
-function RequestTableVictim() {
+function RequestTableVictim({myRequests}) {
   return (
     <div>
         {/*request table header */}
@@ -18,16 +18,16 @@ function RequestTableVictim() {
             <th className="p-3 text-left">Urgency</th>
             <th className="p-3 text-left">Status</th>
 
-            {/* Actions */}
-            <th className="p-3 text-left w-28">Actions</th>
+            
+            
 
             </tr>
         </thead>
 
-        <tbody>
-            <ReqestRowVictim />
-            <ReqestRowVictim />
-        </tbody>
+        
+        <ReqestRowVictim myRequests={myRequests}/>
+            
+        
         </table>
 
         

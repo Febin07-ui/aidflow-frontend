@@ -9,6 +9,30 @@ import { Flip, ToastContainer, toast } from 'react-toastify';
 const NewResourceRequest = () => {
 
     const navigate = useNavigate()
+
+  const getMyLocation = () => {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser")
+    return
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude
+      const lng = position.coords.longitude
+
+      const locationString = `${lat},${lng}`
+
+      setFormData({ ...formData, location: locationString })
+    },
+    (error) => {
+      console.log(error)
+      alert("Unable to get location. Please allow location access.")
+    }
+  )
+}
+
+
   const [formData, setFormData] = useState({
     resourceType: '',
     urgency: '',
@@ -34,9 +58,13 @@ const NewResourceRequest = () => {
     try{
       const result = await createRequestAPI(formData)
       if(result.status === 200){
-        alert('success')
+        
         toast.success('Request submitted successfully')
-        navigate('/victim')
+        setTimeout(()=>{
+          navigate('/victim')
+          scrollTo(0,0);
+        },1500)
+        
       }else{
         toast.warning("Something went wrong")
       }
@@ -119,7 +147,7 @@ const NewResourceRequest = () => {
                   className="w-full bg-slate-900/50 border border-slate-800 rounded-lg py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 outline-none transition"
                 />
               </div>
-              <button className="flex items-center gap-2 bg-blue-900/30 text-blue-400 px-4 py-2 rounded-lg border border-blue-800 hover:bg-blue-900/50 transition whitespace-nowrap">
+              <button onClick={getMyLocation} className="flex items-center gap-2 bg-blue-900/30 text-blue-400 px-4 py-2 rounded-lg border border-blue-800 hover:bg-blue-900/50 transition whitespace-nowrap">
                 <Navigation size={18} /> Use My Location
               </button>
             </div>
