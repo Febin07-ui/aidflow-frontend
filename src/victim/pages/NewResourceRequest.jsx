@@ -55,23 +55,34 @@ const NewResourceRequest = () => {
   ];
 
   const handleSubmit = async () => {
-    try{
-      const result = await createRequestAPI(formData)
-      if(result.status === 200){
-        
-        toast.success('Request submitted successfully')
-        setTimeout(()=>{
-          navigate('/victim')
-          scrollTo(0,0);
-        },1500)
-        
-      }else{
-        toast.warning("Something went wrong")
-      }
-    }catch(error){
-      console.log(error)
-    }
+
+  const token = sessionStorage.getItem("token")
+
+  const reqHeader = {
+    "Authorization": `Bearer ${token}`
   }
+
+  try{
+    const result = await createRequestAPI(formData, reqHeader)
+
+    if(result.status === 200){
+      toast.success('Request submitted successfully')
+
+      setTimeout(()=>{
+        navigate('/victim')
+        scrollTo(0,0)
+      },1500)
+
+    }else{
+      toast.warning("Something went wrong")
+      console.log(result)   
+    }
+
+  }catch(error){
+    console.log(error)
+  }
+}
+
 
   return (
     <div className="min-h-screen bg-primary-blue text-slate-200 font-sans pb-12">

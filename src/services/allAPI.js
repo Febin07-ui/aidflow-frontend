@@ -67,5 +67,9 @@ export const getMyTasksAPI = async (volunteerId) =>{
 export const markDeliveredAPI = async (data) =>{
     return await commonAPI("PUT",`${serverURL}/volunteer/mark-delivered`,data)
 }
+// volunteer dashbord
+export const volunteerStatsAPI = async (reqHeader) =>{
+    return await commonAPI("GET",`${serverURL}/volunteer/stats`,"",reqHeader)
+}
 
 

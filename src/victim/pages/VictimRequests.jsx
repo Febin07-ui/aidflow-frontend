@@ -27,12 +27,13 @@ function VictimRequests() {
         getMyRequests()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+    console.log("myRequest:",myRequests)
   return (
     <div className='flex flex-col'>
         
         <NavigationBar/>
         
-        <div className='flex flex-col p-5 bg-primary-blue h-full px-25 py-10 '>
+        <div className='flex flex-col p-5 bg-primary-blue min-h-screen px-25 py-10 '>
             <div className='flex justify-between '>
                 <div className='flex flex-col '>
                     <p className='text-white text-3xl font-bold mb-2'>My Requests</p>

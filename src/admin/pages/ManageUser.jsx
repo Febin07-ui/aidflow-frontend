@@ -18,6 +18,7 @@ function ManageUser() {
             const result = await getAdminDashboardStatsAPI(reqHeader)
             if(result.status === 200){
                 setStats(result.data)
+                
             }
 
         }

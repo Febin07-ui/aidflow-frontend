@@ -79,14 +79,14 @@ function MyTasks() {
             
         </div>
         <hr  className='mx-9 text-gray-600 '/>
-        <div className='grid grid-cols-2 bg-secondary-blue p-5 gap-5'>
+        <div className='md:grid grid-cols-2 bg-secondary-blue p-5 gap-5 '>
             {/* cards */}
             {
                 myTasks.length > 0 ?(
                     myTasks.map((task) => (
-                        <div key={task._id} className='flex bg-[#2a2c30] rounded-2xl border-1 border-gray-700 hover:border-blue-500 hover:border-l-4 gap-3'>
+                        <div key={task._id} className='flex bg-[#2a2c30] rounded-2xl border-1 border-gray-700 hover:border-blue-500 hover:border-l-4 gap-3 mb-2'>
                 
-                            <div className='flex flex-col pr-2 pt-2 p-3'>
+                            <div className='md:flex flex-col flex-1 p-3'>
                                 <div className='flex gap-5 mb-1'>
                                     <p className={`p-1 rounded text-sm ${
                                     task.requestId.urgency === "High"

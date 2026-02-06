@@ -7,12 +7,37 @@ import WeeklyActivity from '../components/WeeklyActivity'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { volunteerStatsAPI } from '../../services/allAPI'
 
 function VictimHome() {
     const navigate = useNavigate()
     const[dp,setDp] = useState("")
     const [token,setToken] = useState("")
     const [name,setName] = useState("")
+
+    const [stats, setStats] = useState({
+    total: 0,
+    active: 0,
+    completed: 0
+    })
+
+    useEffect(()=>{
+        const getStats = async () =>{
+            const token = sessionStorage.getItem("token")
+
+            const header = {
+                Authorization: `Bearer ${token}`
+            }
+            const result = await volunteerStatsAPI(header)
+            if(result.status == 200){
+                setStats(result.data)
+            }
+        }
+        getStats()
+    },[])
+
+    console.log(stats)
+
     console.log(dp)
     console.log(name)
     useEffect(()=>{
@@ -75,7 +100,7 @@ function VictimHome() {
                             <p className='text-gray-400 font-bold'>Total Accepted</p>
                             <FaCheckCircle className='text-gray-500 text-3xl'/> 
                         </div>
-                        <p className='text-white text-3xl font-bold'>12</p>
+                        <p className='text-white text-3xl font-bold'>{stats.total}</p>
                     </div>
                     {/* Assigned  */}
                     <div className='bg-[#232d36] flex flex-col w-80 h-30 p-4 w-60 h-25 rounded-lg border-1 border-gray-700'>
@@ -83,7 +108,7 @@ function VictimHome() {
                             <p className='text-gray-400 font-bold'>Active Task</p>
                             <FaSpinner className='text-gray-500 text-3xl'/> 
                         </div>
-                        <p className='text-blue-400 text-3xl font-bold'>3</p>
+                        <p className='text-blue-400 text-3xl font-bold'>{stats.active}</p>
                     </div>
                     {/* Pending */}
                     <div className='bg-[#232d36] flex flex-col w-80 h-30 p-4 rounded-lg border-1 border-gray-700'>
@@ -91,7 +116,7 @@ function VictimHome() {
                             <p className='text-gray-400 font-semiboldbold'>COMPLETED TASKS</p>
                             <FaTasks className='text-gray-500 text-3xl'/> 
                         </div>
-                        <p className='text-white text-3xl font-bold'>1</p>
+                        <p className='text-white text-3xl font-bold'>{stats.completed}</p>
                     </div>
                 </div>
 
